@@ -10,3 +10,5 @@ REMOTE DUDE runs in a command prompt and dosent do anything unless you tell it t
 It currently needs a bit of cleaning up before posting here to github, as well as being made more portable. But, it will pop up here sometime soon.
 
 Future goals after release to github include possibly adding a credential manager(low priority), as well as porting it to linux.
+
+![alt text](https://github.com/albanqafa/REMOTE-DUDE/blob/master/screenshot.PNG)
