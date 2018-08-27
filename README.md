@@ -15,19 +15,19 @@ Finally uploaded the current version to github!
 
 If you want to mess around with it, youll need the following in the same folder as remotedude.bat:
 
-MonaServer (Directory) *needed for rtmp/http server*
--WWW (directory)
---dist (directory) *clappr dist files*
---index.html *for clappr, you need to make this yourself if you want to use it, for now*
-BlueScreenView.exe
-CsvFileView.exe
-ffmpeg.exe
-listadmin.bat (contains: "net localgroup administrators")
-PsExec.exe
-PsInfo.exe
-pskill.exe
-PsLoggedon.exe
-screenshot_script.ps1
-TurnedOnTimesView.exe
+- MonaServer (Directory) *needed for rtmp/http server*
+- - WWW (directory)
+- - - dist (directory) *clappr dist files*
+- - - index.html *for clappr, you need to make this yourself if you want to use it, for now*
+- BlueScreenView.exe
+- CsvFileView.exe
+- ffmpeg.exe
+- listadmin.bat (contains: "net localgroup administrators")
+- PsExec.exe
+- PsInfo.exe
+- pskill.exe
+- PsLoggedon.exe
+- screenshot_script.ps1
+- TurnedOnTimesView.exe
 
 ![alt text](https://github.com/albanqafa/REMOTE-DUDE/blob/master/screenshot.PNG)
