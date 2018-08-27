@@ -7,8 +7,27 @@ It was written out of necessity to be a fast and lightwight administration tool 
 
 REMOTE DUDE runs in a command prompt and doesn't do anything unless you tell it to, therefore it's quite fast in the right environment. It makes heavy use of the SysInternals "psexec" tool, and uses common Windows components where availible. Most of its functionality depends on 2 things; being executed with a Windows domain account in the Administrators group, as well as having access to the "c$" share of target machines.
 
-It currently needs a bit of cleaning up before posting here to github, as well as being made more portable. But, it will pop up here sometime soon.
+EDIT:
 
-Future goals after release to github include possibly adding a credential manager(low priority), as well as porting it to linux.
+Finally uploaded the current version to github!
+
+- its absolutely disgusting in its current state and needs LOTS of cleaning up
+
+If you want to mess around with it, youll need the following in the same folder as remotedude.bat:
+
+MonaServer (Directory) *needed for rtmp/http server*
+-WWW (directory)
+--dist (directory) *clappr dist files*
+--index.html *for clappr, you need to make this yourself if you want to use it, for now*
+BlueScreenView.exe
+CsvFileView.exe
+ffmpeg.exe
+listadmin.bat (contains: "net localgroup administrators")
+PsExec.exe
+PsInfo.exe
+pskill.exe
+PsLoggedon.exe
+screenshot_script.ps1
+TurnedOnTimesView.exe
 
 ![alt text](https://github.com/albanqafa/REMOTE-DUDE/blob/master/screenshot.PNG)
