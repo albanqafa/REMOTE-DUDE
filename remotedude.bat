@@ -52,9 +52,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		echo		[19]	Power information
 		echo		[20]	Empty Recycle Bin
 		echo		[1337]	Install Package Manager
-rem		echo		[update]	update stuff
 		echo    	[0]	EXIT
-		rem we are fancy now
 		if %compname% == "" (
 		echo							select a PC with option 2!
 		)
@@ -63,11 +61,8 @@ rem		echo		[update]	update stuff
 		)
 		echo.
 	:BACK0
-			rem cleans the M variable
 			SET M=""
-			rem asks for its value
 			SET /P M=Type an option 1-X then press ENTER: 
-			rem check for sanity
 			IF %M% == "" (
 				echo.
 				echo you must make a selection.
@@ -75,15 +70,13 @@ rem		echo		[update]	update stuff
 				GOTO BACK0
 			)
 		echo.
+		IF %M%==0 GOTO EXIT
 		IF %M%==1 GOTO DOMAINTOOLS
 		IF %M%==2 GOTO COMPUTERNAME
-		IF %M%==0 GOTO EXIT
-		IF %M%==exit GOTO EXIT
 		IF %M%==party GOTO PARTY
 		IF %M%==invert GOTO INVERT
 		IF %M%==music GOTO MUSIC
 		IF %M%==quake GOTO QUAKE
-rem		IF %M%==update* GOTO UPDATE
 	IF %compname% == "" (
 		echo.
 		echo 		! you need to select a PC to do that !
@@ -605,8 +598,7 @@ GOTO CLEAR
 			del \\%compname%\C$\WINDOWS\%compname%_software.txt
 GOTO CLEAR
 :CLEAR
-rem clears screen, goes to MENU
-		cls
+cls
 GOTO MENU
 :PKGMENU
 		echo.
