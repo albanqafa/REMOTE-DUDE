@@ -13,7 +13,7 @@ Finally uploaded the current version to github!
 
 - its absolutely disgusting in its current state and needs LOTS of cleaning up
 
-If you want to mess around with it, youll need the following in the same folder as remotedude.bat:
+If you want to mess around with it, youll need/want the following in the same folder as remotedude.bat:
 
 - MonaServer (Directory) *needed for rtmp/http server*
 - - lua51.dll
