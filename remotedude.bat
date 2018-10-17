@@ -7,7 +7,7 @@ rem so we can be fancy later
 SET compname=""
 rem nothing before this point is repeated
 :MENU
-rem make sure the title dosent get all fucky
+rem make sure the title does not get all fucky
 IF %compname% == "" (
 TITLE REMOTE DUDE
 )
@@ -289,7 +289,7 @@ rem sysinternals psinfo OR windows systeminfo for remote machine
 		echo		--------View Short System Info or FULL System Info?--------
 		echo.
 		echo		note: short is quicker, and mostly usefull for only uptime.
-		echo		      short needs remote registry running, full dosent.
+		echo		      short needs remote registry running, full does not.
 		echo.
 		echo	s for short, f for full, c to cancel
 	:BACK8
@@ -528,7 +528,6 @@ GOTO CLEAR
 	:NIRSOFT_TURNEDON
 		TurnedOnTimesView.exe /Source 2 /RemoteComputer \\%compname%
 	GOTO CLEAR
-		
 GOTO CLEAR
 :SOFTADMIN
 	echo.
