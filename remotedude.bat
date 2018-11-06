@@ -528,7 +528,6 @@ GOTO CLEAR
 	:NIRSOFT_TURNEDON
 		TurnedOnTimesView.exe /Source 2 /RemoteComputer \\%compname%
 	GOTO CLEAR
-GOTO CLEAR
 :SOFTADMIN
 	echo.
 	echo 	SELECT AN OPTION:
