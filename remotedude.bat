@@ -24,14 +24,14 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.1b
+:::		       | | | | | | | | | |  __|    v1.5.2b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
 rem this line is so that the ascii art prints correctly because it has pipes in it
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		echo.
-		echo    	[1]	--broken--
+		echo    	[1]	Install/update dependencies
 		echo    	[2]	Select a Computer
 		echo    	[3]	Remote Registry Service view/start/kill
 		echo    	[4]	Check who's logged in
@@ -71,7 +71,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 			)
 		echo.
 		IF %M%==0 GOTO EXIT
-		IF %M%==1 GOTO DOMAINTOOLS
+		IF %M%==1 GOTO DUDEUPDATE
 		IF %M%==2 GOTO COMPUTERNAME
 		IF %M%==party GOTO PARTY
 		IF %M%==invert GOTO INVERT
@@ -110,34 +110,8 @@ echo oops, thats not an option . . .
 echo.
 pause
 GOTO CLEAR
-:DOMAINTOOLS
-		echo note: these scripts require Remote Server Administration Tools to be installed
-		echo also ---------this stuff does not even work right now!
-		:DOMAINMENU
-		echo			Domain Tools:
-		echo.
-		echo				[1] Unlock account
-		echo				[c] to go back to main manu
-		echo.
-	:BACK1
-			rem cleans the variable
-			SET stringask1=""
-		set /p stringask1= (1-x/c): 
-			rem check for sanity
-			IF %stringask1% == "" (
-				echo.
-				echo you must make a selection.
-				echo.
-				GOTO BACK1
-			)
-			if %stringask1% == 1 (
-			powershell.exe AD_PS\unlock.ps1
-			goto CLEAR
-		)
-			if %stringask1% == c (
-			GOTO CLEAR
-		)
-		echo
+:DUDEUPDATE
+call updater.bat
 GOTO CLEAR
 :COMPUTERNAME
 rem this asks for the computername aka hostname to save as the variable compname
@@ -452,23 +426,16 @@ GOTO CLEAR
 					XCOPY /E /Y monaserver \\%compname%\C$\WINDOWS\monaserver\
 					XCOPY /E /Y nircmd* \\%compname%\C$\WINDOWS\
 					COPY ffmpeg.exe \\%compname%\C$\WINDOWS\ffmpeglive.exe
-
 rem PsExec.exe -i -s -d \\%compname% powershell -Command "(gc C:WINDOWS\monaserver\www\inedx.html) -replace 'compname', '%compname%' | Out-File C:WINDOWS\monaserver\www\inedx.html"
-
 			echo.
 			echo attempting to run monaserver and ffmpeg  . . .
 				PsExec.exe -s -d \\%compname% c:\windows\monaserver\monaserver.exe
 rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -loglevel debug -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1280x1024 -i desktop -f flv "rtmp://localhost conn=S:test conn=S:test2"
 rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -y -f mpegts -i desktop -re -vcodec libx264 -maxrate 700k -r 25 -s 640x360 -deinterlace -acodec libfaac -ab 64k -ac 1 -ar 44100 -f flv "rtmp://localhost conn=S:test conn=S:test2"
 rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -loglevel debug -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1366x768 -framerate 20 -i desktop -vcodec libx264 -preset veryfast -maxrate 700k -bufsize 1400k -r 25 -deinterlace -acodec libfaac -ab 64k -ac 1 -ar 44100 -f flv "rtmp://localhost conn=S:test conn=S:test2"
-
-
 rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1280x1024 -i desktop -framerate 25 -ac 1 -ar 44100 -f flv "rtmp://localhost"
-
 rem live HLS
 PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeglive.exe -threads 1 -y -f gdigrab -draw_mouse 0 -i desktop -framerate 25 -c:v h264 -preset:v ultrafast -flags +cgop -g 20 -hls_time 1 c:\windows\monaserver\www\out.m3u8
-
-
 				PsExec.exe -i -s -d \\%compname% nircmd win hide class consolewindowclass
 			echo.
 			echo					-------all done-------
