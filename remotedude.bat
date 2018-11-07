@@ -197,7 +197,6 @@ rem view which users are logged on with sysinternals tool
 		echo More info:
 		echo.
 		IF %stringask3%==m psexec.exe \\%compname% qwinsta & net session /list
-rem		qwinsta console /server:%compname%
 		echo.
 		pause
 GOTO CLEAR
