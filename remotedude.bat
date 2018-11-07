@@ -505,7 +505,6 @@ GOTO CLEAR
 	:BACK16
 		echo.
 		set /p stringask16= (s/a/c): 
-		rem check for sanity
 		IF %stringask16%=="" GOTO ERROR16
 		IF %stringask16% ==s GOTO SOFTWARE
 		IF %stringask16% ==a GOTO ADMIN
