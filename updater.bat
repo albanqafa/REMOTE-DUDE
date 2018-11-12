@@ -1,5 +1,8 @@
 @ECHO OFF
-echo updating sysinternals via Chocolatey...
+echo Updating 7zip via Chocolatey...
+cup -y 7zip
+echo.
+echo Updating sysinternals via Chocolatey...
 cup -y sysinternals
 mklink %cd%\psexec.exe C:\ProgramData\chocolatey\lib\sysinternals\tools\psexec.exe
 mklink %cd%\psinfo.exe C:\ProgramData\chocolatey\lib\sysinternals\tools\psinfo.exe
@@ -17,6 +20,7 @@ mklink %cd%\IrfanViewPortable\IrfanViewPortable.exe "C:\Program Files\IrfanView\
 echo.
 echo Updating remotedude...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/remotedude.bat', 'remotedude.bat')"
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/.bat', 'updater.bat')"
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/screenshot_script.ps1', 'screenshot_script.ps1')"
 echo.
 echo Updating ffmpeg...
