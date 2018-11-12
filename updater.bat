@@ -1,6 +1,6 @@
 @ECHO OFF
 echo Updating 7zip via Chocolatey...
-cup -y 7zip
+cup -y 7zip.commandline
 echo.
 echo Updating sysinternals via Chocolatey...
 cup -y sysinternals
