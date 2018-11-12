@@ -111,6 +111,7 @@ echo.
 pause
 GOTO CLEAR
 :DUDEUPDATE
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/updater.bat', 'updater.bat')"
 call updater.bat
 GOTO CLEAR
 :COMPUTERNAME
