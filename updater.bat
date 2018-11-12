@@ -24,10 +24,9 @@ powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.github
 echo.
 echo Updating ffmpeg...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.0.2-win64-static.zip', 'ffmpeg.zip')"
-7z x ffmpeg.zip
+rmdir /Q /S ffmpeg\
+7z e ffmpeg.zip -o%cd%\ffmpeg\bin\ -r ffmpeg-*\bin*
 del /Q ffmpeg.zip
-del /Q ffmpeg\
-mv ffmpeg-* ffmpeg
 mklink /H %cd%\ffmpeg.exe ffmpeg\bin\ffmpeg.exe
 echo.
 echo Updating MonaServer...
