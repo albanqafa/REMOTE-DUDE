@@ -25,26 +25,26 @@ echo.
 echo Updating ffmpeg...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.0.2-win64-static.zip', 'ffmpeg.zip')"
 7z x ffmpeg.zip
-del ffmpeg.zip
-del ffmpeg\
+del /Q ffmpeg.zip
+del /Q ffmpeg\
 mv ffmpeg-* ffmpeg
 mklink /H %cd%\ffmpeg.exe ffmpeg\bin\ffmpeg.exe
 echo.
 echo Updating MonaServer...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://newcontinuum.dl.sourceforge.net/project/monaserver/MonaServer_Win32.zip', 'MonaServer.zip')"
 7z x monaserver.zip -o%cd%\MonaServer\
-del monaserver.zip
+del /Q monaserver.zip
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/Monaserver/www/index.html', '%cd%\Monaserver\www\index.html')"
 .echo
 echo.
 echo updating nirsoft utilities...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('http://www.nirsoft.net/utils/nircmd.zip', '%cd%\nircmd.zip')"
 7z x nircmd.zip
-del nircmd.zip
+del /Q nircmd.zip
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/bluescreenview.zip', '%cd%\bluescreenview.zip')"
 7z x bluescreenview.zip
-del bluescreenview.zip
+del /Q bluescreenview.zip
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/turnedontimesview.zip', '%cd%\turnedontimesview.zip')"
 7z x turnedontimesview.zip
-del turnedontimesview.zip
+del /Q turnedontimesview.zip
 pause
