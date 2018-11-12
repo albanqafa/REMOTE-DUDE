@@ -20,7 +20,6 @@ mklink %cd%\IrfanViewPortable\IrfanViewPortable.exe "C:\Program Files\IrfanView\
 echo.
 echo Updating remotedude...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/remotedude.bat', 'remotedude.bat')"
-powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/updater.bat', 'updater.bat')"
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/screenshot_script.ps1', 'screenshot_script.ps1')"
 echo.
 echo Updating ffmpeg...
