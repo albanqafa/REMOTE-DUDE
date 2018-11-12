@@ -111,7 +111,8 @@ echo.
 pause
 GOTO CLEAR
 :DUDEUPDATE
-call updater.bat
+mv updater.bat old_updater.bat
+call old_updater.bat
 GOTO CLEAR
 :COMPUTERNAME
 rem this asks for the computername aka hostname to save as the variable compname
