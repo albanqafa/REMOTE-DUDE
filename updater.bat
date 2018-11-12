@@ -49,4 +49,3 @@ powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsof
 7z x turnedontimesview.zip
 del turnedontimesview.zip
 pause
-del updater.bat
