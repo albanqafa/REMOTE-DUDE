@@ -1,4 +1,5 @@
 @ECHO OFF
+if exist C:\ProgramData\chocolatey\bin\choco.exe (
 echo Updating 7zip via Chocolatey...
 cup -y 7zip.commandline
 echo.
@@ -17,10 +18,6 @@ echo updating irfanview via Chocolatey...
 cup -y irfanview
 mkdir %cd%\IrfanViewPortable
 mklink %cd%\IrfanViewPortable\IrfanViewPortable.exe "C:\Program Files\IrfanView\i_view64.exe"
-echo.
-echo Updating remotedude...
-powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/remotedude.bat', 'remotedude.bat')"
-powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/screenshot_script.ps1', 'screenshot_script.ps1')"
 echo.
 echo Updating ffmpeg...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.0.2-win64-static.zip', 'ffmpeg.zip')"
@@ -46,4 +43,14 @@ del /Q bluescreenview.zip
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/turnedontimesview.zip', '%cd%\turnedontimesview.zip')"
 7z x turnedontimesview.zip
 del /Q turnedontimesview.zip
+GOTO skipchocoprompt
+)
+echo This script will only update remotedude and not install or upgrade dependencies without chocolately installed
+echo.
+echo Since you dont have it installed set computername to localhost and head to the 1337 menu to install it
+echo.
+:skipchocoprompt
+echo Updating remotedude...
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/remotedude.bat', 'remotedude.bat')"
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/screenshot_script.ps1', 'screenshot_script.ps1')"
 pause
