@@ -24,7 +24,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.3b
+:::		       | | | | | | | | | |  __|    v1.5.4b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -603,8 +603,13 @@ GOTO MENU
 			echo			  HIT ENTER TWICE
 			echo 		THEN TYPE EXIT WHEN ITS DONE
 			echo.
+			IF %compname% == "localhost" (
+				powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
+				powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+			) ELSE (
 				PsExec.exe \\%compname% powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
 				PsExec.exe \\%compname% powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+			)
 			echo.
 			echo it always errors out for now.
 			pause
