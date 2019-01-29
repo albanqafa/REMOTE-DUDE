@@ -24,7 +24,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.4b
+:::		       | | | | | | | | | |  __|    v1.5.4c
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -603,13 +603,14 @@ GOTO MENU
 			echo			  HIT ENTER TWICE
 			echo 		THEN TYPE EXIT WHEN ITS DONE
 			echo.
-			IF %compname% == "localhost" (
+			IF %compname% == localhost (
 				powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
 				powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-			) ELSE (
+				GOTO localmachineskip
+			)
 				PsExec.exe \\%compname% powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
 				PsExec.exe \\%compname% powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-			)
+			:localmachineskip
 			echo.
 			echo it always errors out for now.
 			pause
@@ -633,7 +634,12 @@ GOTO MENU
 		GOTO PKG2
 		)
 		if %secretask2% == y (
+			IF %compname% == localhost (
+				cmd.exe /k "choco feature enable -n allowEmptyChecksums"
+				GOTO localmachineskip2
+			)
 				PsExec.exe \\%compname% cmd.exe /k "choco feature enable -n allowEmptyChecksums"
+			:localmachineskip2
 			echo done
 			pause
 		GOTO PKGMENU
