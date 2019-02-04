@@ -27,7 +27,7 @@ if exist %cd%\CSVFileView.exe (goto skipcsvfileview)
 :skipcsvfileview
 echo.
 echo Updating irfanview via Chocolatey...
-powershell (start-process -filepath cup.exe -argumentlist @('-y','irfanview') -verb runas)
+powershell (start-process -filepath cup.exe -argumentlist @('-y','irfanview') -verb runas -Wait)
 if exist %cd%\IrfanViewPortable (goto skipirfanview)
 	mkdir %cd%\IrfanViewPortable
 	mklink %cd%\IrfanViewPortable\IrfanViewPortable.exe "C:\Program Files\IrfanView\i_view64.exe"
