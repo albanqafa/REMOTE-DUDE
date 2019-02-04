@@ -1,14 +1,18 @@
 @ECHO OFF
 echo Checking for chocolatey...
 WHERE choco.exe
-IF %ERRORLEVEL% NEQ 0 powershell.exe -command "Set-ExecutionPolicy RemoteSigned" && powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+IF %ERRORLEVEL% NEQ 1 goto skipchoco
+::: Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A>installchoco.ps1
+powershell (start-process -filepath powershell -argument %cd%\installchoco.ps1 -verb runas -Wait)
+:skipchoco
 echo OK
 echo.
 echo Updating 7zip via Chocolatey...
-powershell (start-process -filepath cup.exe -argumentlist @('-y','7zip.commandline') -verb runas)
+powershell (start-process -filepath cup.exe -argumentlist @('-y','7zip.commandline') -verb runas -Wait)
 echo.
 echo Updating sysinternals via Chocolatey...
-powershell (start-process -filepath cup.exe -argumentlist @('-y','sysinternals') -verb runas)
+powershell (start-process -filepath cup.exe -argumentlist @('-y','sysinternals') -verb runas -Wait)
 if exist %cd%\psexec.exe (goto skippsexec)
 	mklink %cd%\psexec.exe %ProgramData%\chocolatey\lib\sysinternals\tools\psexec.exe
 	mklink %cd%\psinfo.exe %ProgramData%\chocolatey\lib\sysinternals\tools\psinfo.exe
@@ -17,7 +21,7 @@ if exist %cd%\psexec.exe (goto skippsexec)
 :skippsexec
 echo.
 echo Updating CSVfileView via Chocolatey...
-powershell (start-process -filepath cup.exe -argumentlist @('-y','CSVFileView') -verb runas)
+powershell (start-process -filepath cup.exe -argumentlist @('-y','CSVFileView') -verb runas -Wait)
 if exist %cd%\CSVFileView.exe (goto skipcsvfileview)
 	mklink %cd%\CSVFileView.exe C:\ProgramData\chocolatey\lib\csvfileview\tools\csvfileview.exe
 :skipcsvfileview
