@@ -36,7 +36,7 @@ echo.
 echo Updating ffmpeg...
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.0.2-win64-static.zip', 'ffmpeg.zip')"
 rem rmdir /Q /S ffmpeg\
-		7z e ffmpeg.zip -o%cd%\ffmpeg\bin\ -r ffmpeg-*\bin*
+		7z e ffmpeg.zip -o%cd%\ffmpeg\bin\ -r ffmpeg-*\bin* -y
 		del /Q ffmpeg.zip
 if exist %cd%\ffmpeg.exe (goto skipffmpeg)
 	mklink /H %cd%\ffmpeg.exe ffmpeg\bin\ffmpeg.exe
@@ -44,20 +44,20 @@ if exist %cd%\ffmpeg.exe (goto skipffmpeg)
 echo.
 echo Updating MonaServer...
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://newcontinuum.dl.sourceforge.net/project/monaserver/MonaServer_Win32.zip', 'MonaServer.zip')"
-	7z x monaserver.zip -o%cd%\MonaServer\
+	7z x monaserver.zip -o%cd%\MonaServer\ -y
 	del /Q monaserver.zip
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/Monaserver/www/index.html', '%cd%\Monaserver\www\index.html')"
 echo.
 echo.
 echo Updating nirsoft utilities...
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('http://www.nirsoft.net/utils/nircmd.zip', '%cd%\nircmd.zip')"
-	7z x nircmd.zip -aoa
+	7z x nircmd.zip -aoa -y
 del /Q nircmd.zip
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/bluescreenview.zip', '%cd%\bluescreenview.zip')"
-	7z x bluescreenview.zip -aoa
+	7z x bluescreenview.zip -aoa -y
 del /Q bluescreenview.zip
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/turnedontimesview.zip', '%cd%\turnedontimesview.zip')"
-	7z x turnedontimesview.zip -aoa
+	7z x turnedontimesview.zip -aoa -y
 del /Q turnedontimesview.zip
 GOTO skipchocoprompt
 echo This script will only update remotedude and not install or upgrade dependencies without chocolately installed
