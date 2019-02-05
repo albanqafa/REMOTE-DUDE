@@ -26,7 +26,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.6b
+:::		       | | | | | | | | | |  __|    v1.5.7b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -39,7 +39,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		echo    	[4]	Check who's logged in
 		echo    	[5]	Kill a process
 		echo		[6]	View running processes
-		echo		[7]	Computer Management/Admin Shares(wX)
+		echo		[7]	Computer Management
 		echo		[8]	View Info
 		echo		[9]	Remote Desktop
 		echo		[10]	(redacted)
@@ -47,7 +47,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		echo		[12]	Trace
 		echo		[13]	Remote CMD prompt
 		echo		[14]	Remote Explore C: drive
-		echo		[15]	VIEW SCREEN--(ask for consent!)
+		echo		[15]	View Screen
 		echo		[16]	View installed Software/local Admins
 		echo		[17]	NIRSOFT TOOLS
 		echo		[18]	Printer Stuff
@@ -242,24 +242,10 @@ rem i fucked this up
 		:7option2
 				echo this SHOULD work
 				pause
-rem				psexec.exe  \\%compname% netsh firewall set service remoteadmin enable
-rem				psexec.exe  \\%compname% netsh advfirewall firewall set rule group="Remote Volume Management" new enable=yes
 				psexec.exe  \\%compname% netsh firewall set service remoteadmin enable & reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f & netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable =yes
 				pause
 		GOTO CLEAR
 GOTO CLEAR
-rem for future reference
-rem netsh advfirewall firewall set rule group="Remote Administration" new enable=yes
-rem netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=yes
-rem netsh advfirewall firewall set rule group="Remote Service Management" new enable=yes
-rem netsh advfirewall firewall set rule group="Performance Logs and Alerts" new enable=yes
-rem Netsh advfirewall firewall set rule group="Remote Event Log Management" new enable=yes
-rem Netsh advfirewall firewall set rule group="Remote Scheduled Tasks Management" new enable=yes
-rem netsh advfirewall firewall set rule group="Remote Volume Management" new enable=yes
-rem netsh advfirewall firewall set rule group="Remote Desktop" new enable=yes
-rem netsh advfirewall firewall set rule group="Windows Firewall Remote Management" new enable =yes
-rem netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable =yes
-
 :SYSINFO
 rem sysinternals psinfo OR windows systeminfo for remote machine 
 		echo		--------View Short System Info or FULL System Info?--------
@@ -429,7 +415,6 @@ GOTO CLEAR
 					XCOPY /E /Y monaserver \\%compname%\C$\WINDOWS\monaserver\
 					XCOPY /E /Y nircmd* \\%compname%\C$\WINDOWS\
 					COPY ffmpeg.exe \\%compname%\C$\WINDOWS\ffmpeglive.exe
-rem PsExec.exe -i -s -d \\%compname% powershell -Command "(gc C:WINDOWS\monaserver\www\inedx.html) -replace 'compname', '%compname%' | Out-File C:WINDOWS\monaserver\www\inedx.html"
 			echo.
 			echo attempting to run monaserver and ffmpeg  . . .
 				PsExec.exe -s -d \\%compname% c:\windows\monaserver\monaserver.exe
@@ -445,13 +430,6 @@ PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeglive.exe -threads 1 -y -f gdig
 			echo 
 			echo go to http://%compname%/index.html"
 			pause
-rem				VLCPortable\vlcportable.exe rtmp://%compname%
-rem					pskill.exe \\%compname% monaserver.exe
-rem					pskill.exe \\%compname% ffmpeg.exe
-rem					pskill.exe \\%compname% nircmd.exe
-rem					rmdir /Q /S \\%compname%\C$\WINDOWS\monaserver\
-rem					del /Q \\%compname%\C$\WINDOWS\ffmpeg.exe
-rem					del /Q \\%compname%\C$\WINDOWS\nircmd*
 		GOTO CLEAR
 		)
 		if %stringask10% == clean (
@@ -605,14 +583,8 @@ GOTO MENU
 			echo			  HIT ENTER TWICE
 			echo 		THEN TYPE EXIT WHEN ITS DONE
 			echo.
-			IF %compname% == localhost (
-				powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
-				powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-				GOTO localmachineskip
-			)
 				PsExec.exe \\%compname% powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
 				PsExec.exe \\%compname% powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
-			:localmachineskip
 			echo.
 			echo it always errors out for now.
 			pause
@@ -636,12 +608,7 @@ GOTO MENU
 		GOTO PKG2
 		)
 		if %secretask2% == y (
-			IF %compname% == localhost (
-				cmd.exe /k "choco feature enable -n allowEmptyChecksums"
-				GOTO localmachineskip2
-			)
 				PsExec.exe \\%compname% cmd.exe /k "choco feature enable -n allowEmptyChecksums"
-			:localmachineskip2
 			echo done
 			pause
 		GOTO PKGMENU
@@ -800,8 +767,6 @@ rem	wmic /node:%compname% process call create "wuauclt.exe /detectnow /updatenow
 rem	wmic /node:%compname% process call create "avp update"
 	psexec.exe \\%compname% avp update
 	GOTO CLEAR
-
-
 GOTO CLEAR
 :QUAKE
 psexec.exe quake/glass.exe
