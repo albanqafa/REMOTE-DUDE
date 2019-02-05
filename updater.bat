@@ -52,29 +52,42 @@ if not %_ffmpeg_current% == %_ffmpeg_wanted% (
 echo Hashes match
 echo.
 echo Updating MonaServer...
+if exist %cd%\Monaserver\MonaServer.exe (goto skipmona)
+:updatemona
+del %cd%\Monaserver\MonaServer.exe
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://newcontinuum.dl.sourceforge.net/project/monaserver/MonaServer_Win32.zip', 'MonaServer.zip')"
 	7z x monaserver.zip -o%cd%\MonaServer\ -y
 	del /Q monaserver.zip
-	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/Monaserver/www/index.html', '%cd%\Monaserver\www\index.html')"
+rem	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/Monaserver/www/index.html', '%cd%\Monaserver\www\index.html')"
+:skipmona
+echo Checking hash...
+set _mona_wanted=1B8B7CCDC2CA665EDBDC467755DAE92E0523EA676A7251D5388EEA46704AB0E6
+for /f "tokens=3" %%a in ('@powershell -command "(get-filehash %cd%\Monaserver\MonaServer.exe | format-list -property hash | out-string)"') do set _mona_current=%%a
+if not %_mona_current% == %_mona_wanted% (
+	echo hash mismatch... updating
+	goto updatemona
+)
+echo Hashes match
 echo.
-echo.
-echo Updating nirsoft utilities...
-	powershell -Command "(New-Object Net.WebClient).DownloadFile('http://www.nirsoft.net/utils/nircmd.zip', '%cd%\nircmd.zip')"
-	7z x nircmd.zip -aoa -y
-del /Q nircmd.zip
-	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/bluescreenview.zip', '%cd%\bluescreenview.zip')"
-	7z x bluescreenview.zip -aoa -y
-del /Q bluescreenview.zip
-	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/turnedontimesview.zip', '%cd%\turnedontimesview.zip')"
-	7z x turnedontimesview.zip -aoa -y
+echo Updating nirsoft utilities via chocolatey...
+powershell (start-process -filepath cup.exe -argumentlist @('-y','nircmd') -verb runas -Wait)
+powershell (start-process -filepath cup.exe -argumentlist @('-y','bluescreenview') -verb runas -Wait)
+if not exist %cd%\nircmd.exe (mklink /H %cd%\nircmd.exe %ProgramData%\chocolatey\bin\nircmd.exe)
+if not exist %cd%\bluescreenview.exe (mklink %cd%\bluescreenview.exe "%PROGRAMFILES(X86)%\Nirsoft\BlueScreenView.exe")
+if exist %cd%\TurnedOnTimesView.exe (goto skipnirsoft)
+rem :skipnirsoft
+rem	powershell -Command "(New-Object Net.WebClient).DownloadFile('http://www.nirsoft.net/utils/nircmd.zip', '%cd%\nircmd.zip')"
+rem	7z x nircmd.zip -aoa -y
+rem del /Q nircmd.zip
+rem 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/bluescreenview.zip', '%cd%\bluescreenview.zip')"
+rem 	7z x bluescreenview.zip -aoa -y
+rem del /Q bluescreenview.zip
+ 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://www.nirsoft.net/utils/turnedontimesview.zip', '%cd%\turnedontimesview.zip')"
+ 	7z x turnedontimesview.zip -aoa -y
 del /Q turnedontimesview.zip
-GOTO skipchocoprompt
-echo This script will only update remotedude and not install or upgrade dependencies without chocolately installed
+:skipnirsoft
 echo.
-echo Since you dont have it installed set computername to localhost and head to the 1337 menu to install it
-echo.
-:skipchocoprompt
 echo Updating remotedude...
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/remotedude.bat', 'remotedude.bat')"
-	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/screenshot_script.ps1', 'screenshot_script.ps1')"
+rem 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://raw.githubusercontent.com/albanqafa/REMOTE-DUDE/master/screenshot_script.ps1', 'screenshot_script.ps1')"
 pause
