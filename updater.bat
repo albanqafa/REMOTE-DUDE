@@ -36,6 +36,7 @@ echo.
 echo Updating ffmpeg...
 if exist %cd%\ffmpeg.exe (goto skipffmpeg)
 :updateffmpeg
+del ffmpeg.exe
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.0.2-win64-static.zip', 'ffmpeg.zip')"
 		7z e ffmpeg.zip -o%cd%\ffmpeg\bin\ -r ffmpeg-*\bin* -y
 		del /Q ffmpeg.zip
