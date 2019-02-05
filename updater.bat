@@ -34,13 +34,21 @@ if exist %cd%\IrfanViewPortable (goto skipirfanview)
 :skipirfanview
 echo.
 echo Updating ffmpeg...
+if exist %cd%\ffmpeg.exe (goto skipffmpeg)
+:updateffmpeg
 powershell -Command "(New-Object Net.WebClient).DownloadFile('https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.0.2-win64-static.zip', 'ffmpeg.zip')"
-rem rmdir /Q /S ffmpeg\
 		7z e ffmpeg.zip -o%cd%\ffmpeg\bin\ -r ffmpeg-*\bin* -y
 		del /Q ffmpeg.zip
-if exist %cd%\ffmpeg.exe (goto skipffmpeg)
 	mklink /H %cd%\ffmpeg.exe ffmpeg\bin\ffmpeg.exe
 :skipffmpeg
+echo Checking hash...
+set _ffmpeg_wanted=65824F7C3FA12E7181CC75E29DA4D6C9C3FD103D53F835A0884BB4BE65274EF2
+for /f "tokens=3" %%a in ('@powershell -command "(get-filehash ffmpeg.exe | format-list -property hash | out-string)"') do set _ffmpeg_current=%%a
+if not %_ffmpeg_current% == %_ffmpeg_wanted% (
+	echo hash mismatch... updating
+	goto updateffmpeg
+)
+echo Hashes match
 echo.
 echo Updating MonaServer...
 	powershell -Command "(New-Object Net.WebClient).DownloadFile('https://newcontinuum.dl.sourceforge.net/project/monaserver/MonaServer_Win32.zip', 'MonaServer.zip')"
