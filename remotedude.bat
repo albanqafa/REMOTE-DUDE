@@ -1,4 +1,6 @@
 @ECHO OFF
+@setlocal enableextensions
+@cd /d "%~dp0"
 mode con: cols=80 lines=50
 SET colorvar=1
 SET MUSICON=0
@@ -24,7 +26,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.5b
+:::		       | | | | | | | | | |  __|    v1.5.6b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
