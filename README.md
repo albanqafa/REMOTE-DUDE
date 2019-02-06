@@ -7,6 +7,10 @@ It was written out of necessity to be a fast and lightwight administration tool 
 
 REMOTE DUDE runs in a command prompt and doesn't do anything unless you tell it to, therefore it's quite fast in the right environment. It makes heavy use of the SysInternals "psexec" tool, and uses common Windows components where availible. Most of its functionality depends on 2 things; being executed with a Windows domain account in the Administrators group, as well as having access to the "c$" share of target machines.
 
+Requirements:
+- Powershell version 4 or higher
+- Must be ran by user in Administrators group
+
 How to install:
 - Download as zip and extract it, or git pull the repo
 - run remotedude.bat and select option 1 to install dependencies
