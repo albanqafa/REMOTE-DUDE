@@ -73,7 +73,7 @@ echo Updating nirsoft utilities via chocolatey...
 powershell (start-process -filepath cup.exe -argumentlist @('-y','nircmd') -verb runas -Wait)
 powershell (start-process -filepath cup.exe -argumentlist @('-y','bluescreenview') -verb runas -Wait)
 if not exist %cd%\nircmd.exe (mklink /H %cd%\nircmd.exe %ProgramData%\chocolatey\bin\nircmd.exe)
-if not exist %cd%\bluescreenview.exe (mklink %cd%\bluescreenview.exe "%PROGRAMFILES(X86)%\Nirsoft\BlueScreenView.exe")
+if not exist %cd%\bluescreenview.exe (mklink /H %cd%\bluescreenview.exe "%PROGRAMFILES(X86)%\Nirsoft\BlueScreenView.exe")
 if exist %cd%\TurnedOnTimesView.exe (goto skipnirsoft)
 rem :skipnirsoft
 rem	powershell -Command "(New-Object Net.WebClient).DownloadFile('http://www.nirsoft.net/utils/nircmd.zip', '%cd%\nircmd.zip')"
