@@ -9,7 +9,7 @@ REMOTE DUDE runs in a command prompt and doesn't do anything unless you tell it 
 
 Requirements:
 - Powershell version 4 or higher
-- Must be ran by user in Administrators group
+- Access to a user in Administrators group (or Domain Administrators group)
 
 How to install:
 - Download as zip and extract it, or git pull the repo
