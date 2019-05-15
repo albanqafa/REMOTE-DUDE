@@ -26,7 +26,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.9b
+:::		       | | | | | | | | | |  __|    v1.5.10b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -54,12 +54,14 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		echo		[19]	Power information
 		echo		[20]	Empty Recycle Bin
 		echo		[1337]	Install Package Manager
-		echo    	[0]	EXIT
+		echo		[user]	Switch user
+		echo    	[exit]	EXIT
+		echo						User:		%userdomain%\%username%
 		if %compname% == "" (
-		echo							select a PC with option 2!
+		echo						Selected PC:	none
 		)
 		if not %compname% == "" (
-		echo							selected PC: %compname%
+		echo						Selected PC:	%compname%
 		)
 		echo.
 	:BACK0
@@ -79,6 +81,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		IF %M%==invert GOTO INVERT
 		IF %M%==music GOTO MUSIC
 		IF %M%==quake GOTO QUAKE
+		IF %M%==user GOTO CHANGEUSER
 	IF %compname% == "" (
 		echo.
 		echo 		! you need to select a PC to do that !
@@ -768,6 +771,12 @@ rem	wmic /node:%compname% process call create "avp update"
 	psexec.exe \\%compname% avp update
 	GOTO CLEAR
 GOTO CLEAR
+:CHANGEUSER
+set /p newdomain= Domain: 
+set /p newusername= User: 
+runas /noprofile /user:%newdomain%\%newusername% %cd%\remotedude.bat
+exit
+goto clear
 :QUAKE
 psexec.exe quake/glass.exe
 autohotkey quake/quake.ahk
