@@ -16,4 +16,4 @@ How to install:
 - run remotedude.bat and select option 1 to install dependencies
   - You will need to right click remotedude.bat and 'run as admin' to install/update dependencies if you are using a standard account, or use the 'user' option to run as a different user with admin rights
   
-![alt text](https://github.com/albanqafa/REMOTE-DUDE/blob/master/screenshot.PNG)
+![alt text](https://github.com/albanqafa/REMOTE-DUDE/blob/master/screenshot.png)
