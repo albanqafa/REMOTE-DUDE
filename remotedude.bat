@@ -74,7 +74,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 				GOTO BACK0
 			)
 		echo.
-		IF %M%==0 GOTO EXIT
+		IF %M%==exit GOTO EXIT
 		IF %M%==1 GOTO DUDEUPDATE
 		IF %M%==2 GOTO COMPUTERNAME
 		IF %M%==party GOTO PARTY
