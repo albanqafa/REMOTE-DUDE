@@ -26,7 +26,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.10b
+:::		       | | | | | | | | | |  __|    v1.5.11b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -169,14 +169,14 @@ rem view which users are logged on with sysinternals tool
 		echo if this crashes/complains about HKEY_USERS you need to (re)start the machines remote registry service
 		echo.
 		pause
-		psloggedon.exe \\%compname%
+		psloggedon.exe -nobanner \\%compname%
 		echo.
 			SET stringask3=""
 		set /p stringask3= M for more ENTER to close: 
 		IF %stringask3%=="" GOTO CLEAR
 		echo More info:
 		echo.
-		IF %stringask3%==m psexec.exe \\%compname% qwinsta & net session /list
+		IF %stringask3%==m psexec.exe -nobanner \\%compname% qwinsta & net session /list
 		echo.
 		pause
 GOTO CLEAR
@@ -200,7 +200,7 @@ rem kill task remotely with sysinternals tool
 				GOTO BACK5
 			)
 		if %stringask3% == y (
-			pskill.exe \\%compname% %taskname%
+			pskill.exe -nobanner \\%compname% %taskname%
 		)
 		pause
 GOTO CLEAR
@@ -245,7 +245,7 @@ rem i fucked this up
 		:7option2
 				echo this SHOULD work
 				pause
-				psexec.exe  \\%compname% netsh firewall set service remoteadmin enable & reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f & netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable =yes
+				psexec.exe -nobanner  \\%compname% netsh firewall set service remoteadmin enable & reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\system /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f & netsh advfirewall firewall set rule group="windows management instrumentation (wmi)" new enable =yes
 				pause
 		GOTO CLEAR
 GOTO CLEAR
@@ -271,7 +271,7 @@ rem sysinternals psinfo OR windows systeminfo for remote machine
 			)
 		if %stringask5% == s (
 			echo just a minute . . .
-			psinfo.exe \\%compname%
+			psinfo.exe -nobanner \\%compname%
 			pause
 			GOTO CLEAR
 		)
@@ -315,13 +315,13 @@ GOTO CLEAR
 			echo.
 			echo remember to click "request control" to gain mouse and keyboard access
 			echo close remote assistance when done. . .
-rem				PsExec.exe -i -s \\%compname% msra /saveasfile c:/windows/
+rem				psexec.exe -nobanner -i -s \\%compname% msra /saveasfile c:/windows/
 				msra /offerra %compname%
 			GOTO CLEAR
 		)
 			if %stringask9% == e (
-			psexec.exe  \\%compname% reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
-			psexec.exe  \\%compname% reg add "HKLM\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 1 /f
+			psexec.exe -nobanner  \\%compname% reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f
+			psexec.exe -nobanner  \\%compname% reg add "HKLM\System\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp" /v UserAuthentication /t REG_DWORD /d 1 /f
 			echo.
 			pause
 			GOTO CLEAR
@@ -361,7 +361,7 @@ rem uses sysinternals psexec to remotely execute cmd.exe from remote machine wit
 			echo.
 			echo you are now logged in %compname% as %username%
 			echo.
-			PsExec.exe \\%compname% cmd.exe
+			psexec.exe -nobanner \\%compname% cmd.exe
 			echo.
 			echo it always errors out for now.
 			pause
@@ -398,7 +398,7 @@ GOTO CLEAR
 					COPY screenshot_script.ps1 \\%compname%\C$\WINDOWS\screenshot.ps1
 			echo.
 			echo attempting to create screenshot at \\%compname%\C$\WINDOWS\screen.png . . .
-				PsExec.exe -i -s \\%compname% powershell.exe -windowstyle hidden -file "c:\WINDOWS\screenshot.ps1"
+				psexec.exe -nobanner -i -s \\%compname% powershell.exe -windowstyle hidden -file "c:\WINDOWS\screenshot.ps1"
 					ren \\%compname%\C$\WINDOWS\screen.png %compname%_screen.png
 			echo.
 			echo created screenshot and renamed it \\%compname%\C$\WINDOWS\%compname%_screen.png
@@ -420,14 +420,14 @@ GOTO CLEAR
 					COPY ffmpeg.exe \\%compname%\C$\WINDOWS\ffmpeglive.exe
 			echo.
 			echo attempting to run monaserver and ffmpeg  . . .
-				PsExec.exe -s -d \\%compname% c:\windows\monaserver\monaserver.exe
-rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -loglevel debug -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1280x1024 -i desktop -f flv "rtmp://localhost conn=S:test conn=S:test2"
-rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -y -f mpegts -i desktop -re -vcodec libx264 -maxrate 700k -r 25 -s 640x360 -deinterlace -acodec libfaac -ab 64k -ac 1 -ar 44100 -f flv "rtmp://localhost conn=S:test conn=S:test2"
-rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -loglevel debug -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1366x768 -framerate 20 -i desktop -vcodec libx264 -preset veryfast -maxrate 700k -bufsize 1400k -r 25 -deinterlace -acodec libfaac -ab 64k -ac 1 -ar 44100 -f flv "rtmp://localhost conn=S:test conn=S:test2"
-rem				PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeg.exe -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1280x1024 -i desktop -framerate 25 -ac 1 -ar 44100 -f flv "rtmp://localhost"
+				psexec.exe -nobanner -s -d \\%compname% c:\windows\monaserver\monaserver.exe
+rem				psexec.exe -nobanner -i -s -d \\%compname% c:\windows\ffmpeg.exe -loglevel debug -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1280x1024 -i desktop -f flv "rtmp://localhost conn=S:test conn=S:test2"
+rem				psexec.exe -nobanner -i -s -d \\%compname% c:\windows\ffmpeg.exe -y -f mpegts -i desktop -re -vcodec libx264 -maxrate 700k -r 25 -s 640x360 -deinterlace -acodec libfaac -ab 64k -ac 1 -ar 44100 -f flv "rtmp://localhost conn=S:test conn=S:test2"
+rem				psexec.exe -nobanner -i -s -d \\%compname% c:\windows\ffmpeg.exe -loglevel debug -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1366x768 -framerate 20 -i desktop -vcodec libx264 -preset veryfast -maxrate 700k -bufsize 1400k -r 25 -deinterlace -acodec libfaac -ab 64k -ac 1 -ar 44100 -f flv "rtmp://localhost conn=S:test conn=S:test2"
+rem				psexec.exe -nobanner -i -s -d \\%compname% c:\windows\ffmpeg.exe -y -f gdigrab -draw_mouse 1 -offset_x 0 -offset_y 0 -video_size 1280x1024 -i desktop -framerate 25 -ac 1 -ar 44100 -f flv "rtmp://localhost"
 rem live HLS
-PsExec.exe -i -s -d \\%compname% c:\windows\ffmpeglive.exe -threads 1 -y -f gdigrab -draw_mouse 0 -i desktop -framerate 25 -c:v h264 -preset:v ultrafast -flags +cgop -g 20 -hls_time 1 c:\windows\monaserver\www\out.m3u8
-				PsExec.exe -i -s -d \\%compname% nircmd win hide class consolewindowclass
+psexec.exe -nobanner -i -s -d \\%compname% c:\windows\ffmpeglive.exe -threads 1 -y -f gdigrab -draw_mouse 0 -i desktop -framerate 25 -c:v h264 -preset:v ultrafast -flags +cgop -g 20 -hls_time 1 c:\windows\monaserver\www\out.m3u8
+				psexec.exe -nobanner -i -s -d \\%compname% nircmd win hide class consolewindowclass
 			echo.
 			echo					-------all done-------
 			echo 
@@ -499,7 +499,7 @@ GOTO CLEAR
 	GOTO BACK16
 		:admin
 			COPY listadmin.bat \\%compname%\C$\WINDOWS\listadmin.bat
-			psexec.exe -s \\%compname% c:\WINDOWS\listadmin.bat
+			psexec.exe -nobanner -s \\%compname% c:\WINDOWS\listadmin.bat
 			del \\%compname%\C$\WINDOWS\listadmin.bat
 			echo _______________________________________________________________________________
 			echo.
@@ -529,7 +529,7 @@ GOTO CLEAR
 				:ADMINKILL
 					echo net localgroup administrators %user16% /DELETE > remadmin.bat
 					COPY remadmin.bat \\%compname%\C$\WINDOWS\remadmin.bat
-					psexec.exe -s \\%compname%  c:\WINDOWS\remadmin.bat
+					psexec.exe -nobanner -s \\%compname%  c:\WINDOWS\remadmin.bat
 					del \\%compname%\C$\WINDOWS\remadmin.bat
 					del remadmin.bat
 					echo.
@@ -538,7 +538,7 @@ GOTO CLEAR
 	:software
 			echo.
 			echo		hit enter in a few seconds
-			psexec.exe -s \\%compname% powershell.exe -command "Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table -AutoSize | Out-File -FilePath c:\windows\%compname%_software.txt -width 1000" 
+			psexec.exe -nobanner -s \\%compname% powershell.exe -command "Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Format-Table -AutoSize | Out-File -FilePath c:\windows\%compname%_software.txt -width 1000" 
 			echo.
 			echo close notepad when done
 			notepad \\%compname%\c$\windows\%compname%_software.txt
@@ -586,8 +586,8 @@ GOTO MENU
 			echo			  HIT ENTER TWICE
 			echo 		THEN TYPE EXIT WHEN ITS DONE
 			echo.
-				PsExec.exe \\%compname% powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
-				PsExec.exe \\%compname% powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+				psexec.exe -nobanner \\%compname% powershell.exe -command "Set-ExecutionPolicy RemoteSigned"
+				psexec.exe -nobanner \\%compname% powershell.exe -command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
 			echo.
 			echo it always errors out for now.
 			pause
@@ -611,7 +611,7 @@ GOTO MENU
 		GOTO PKG2
 		)
 		if %secretask2% == y (
-				PsExec.exe \\%compname% cmd.exe /k "choco feature enable -n allowEmptyChecksums"
+				psexec.exe -nobanner \\%compname% cmd.exe /k "choco feature enable -n allowEmptyChecksums"
 			echo done
 			pause
 		GOTO PKGMENU
@@ -666,7 +666,7 @@ GOTO CLEAR
 				if %printername% == "" (
 				GOTO PRINTER_REMOVE
 				)
-		psexec.exe \\%compname% printui.exe /dn /n \\%printserver%\%printername%
+		psexec.exe -nobanner \\%compname% printui.exe /dn /n \\%printserver%\%printername%
 		echo.
 		pause
 	GOTO PRINTCLEAR
@@ -677,12 +677,12 @@ GOTO CLEAR
 				if %printername% == "" (
 				GOTO PRINTER_ADD
 				)
-		psexec.exe \\%compname% printui.exe /in /n \\%printserver%\%printername%
+		psexec.exe -nobanner \\%compname% printui.exe /in /n \\%printserver%\%printername%
 		echo.
 		pause
 	GOTO PRINTCLEAR
 	:PRINTER_VIEW
-		psexec.exe \\%compname% powershell.exe -command "get-WmiObject -class Win32_printer | ft name, systemName, shareName"
+		psexec.exe -nobanner \\%compname% powershell.exe -command "get-WmiObject -class Win32_printer | ft name, systemName, shareName"
 		pause
 	GOTO PRINTCLEAR
 	:PRINTCLEAR
@@ -708,20 +708,20 @@ GOTO CLEAR
 			echo you must make a selection
 			pause
 	:POWER_BATTERY
-		psexec.exe \\%compname% wmic path win32_Battery
+		psexec.exe -nobanner \\%compname% wmic path win32_Battery
 		pause
 		echo.
 		echo.
 		GOTO :POWER
 	:POWER_DETAILED
-		psexec.exe \\%compname% powercfg -energy /output C:\windows\%compname%_power_report.html
+		psexec.exe -nobanner \\%compname% powercfg -energy /output C:\windows\%compname%_power_report.html
 		\\%compname%\c$\windows\%compname%_power_report.html
 		del \\%compname%\c$\windows\%compname%_power_report.html
 	echo.
 	GOTO :POWER
 GOTO CLEAR
 :RECYCLE
-	psexec.exe \\%compname% rmdir /s %systemdrive%\$Recycle.bin
+	psexec.exe -nobanner \\%compname% rmdir /s %systemdrive%\$Recycle.bin
 	echo Recycle Bin on %compname% 
 GOTO CLEAR
 :EXIT
@@ -763,12 +763,12 @@ GOTO CLEAR
 	:updateoption1
 		echo sending windows update command. . .
 rem	wmic /node:%compname% process call create "wuauclt.exe /detectnow /updatenow"
-	psexec.exe \\%compname% wuauclt.exe /detectnow /updatenow
+	psexec.exe -nobanner \\%compname% wuauclt.exe /detectnow /updatenow
 		echo ok.
 	GOTO CLEAR
 	:updateoption2
 rem	wmic /node:%compname% process call create "avp update"
-	psexec.exe \\%compname% avp update
+	psexec.exe -nobanner \\%compname% avp update
 	GOTO CLEAR
 GOTO CLEAR
 :CHANGEUSER
@@ -778,7 +778,7 @@ runas /noprofile /user:%newdomain%\%newusername% %cd%\remotedude.bat
 exit
 goto clear
 :QUAKE
-psexec.exe quake/glass.exe
+psexec.exe -nobanner quake/glass.exe
 autohotkey quake/quake.ahk
 autohotkey quake/titlebar.ahk
 GOTO CLEAR
