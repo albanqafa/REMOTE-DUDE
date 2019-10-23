@@ -26,7 +26,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.11b
+:::		       | | | | | | | | | |  __|    v1.5.12b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -50,7 +50,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		echo		[15]	View Screen
 		echo		[16]	View installed Software/local Admins
 		echo		[17]	NIRSOFT TOOLS
-		echo		[18]	Printer Stuff
+		echo		[18]	Profile Migrator (new - untested)
 		echo		[19]	Power information
 		echo		[20]	Empty Recycle Bin
 		echo		[1337]	Install Package Manager
@@ -105,7 +105,7 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 		IF %M%==15 GOTO SCREENSHOT
 		IF %M%==16 GOTO SOFTADMIN
 		IF %M%==17 GOTO NIRSOFT
-		IF %M%==18 GOTO PRINTER
+		IF %M%==18 GOTO PROFILEMIG
 		IF %M%==19 GOTO POWER
 		IF %M%==20 GOTO RECYCLE
 		IF %M%==1337 GOTO PKGMENu
@@ -621,73 +621,13 @@ GOTO MENU
 		GOTO PKGMENU
 		)
 GOTO CLEAR
-:PRINTER
-		SET printserver=""
-	:PRINTERMENU
-	echo.
-	echo	-----------------------PRINT MENU-----------------------
-	echo.
-	echo 	SELECT AN OPTION:
-	echo.
-	echo		[1] select a print server
-	echo		[2] remove a printer 
-	echo		[3] add a printer
-	echo		[v] to view connected printers on %compname%
-	echo		[c] to cancel
-		if %printserver% == "" (
-		echo							select a print server!
-		)
-		if not %printserver% == "" (
-		echo							printserver: %printserver%
-		)
-		echo.
-		SET stringask17=""
-	:BACK18
-		echo.
-		set /p stringask18= (1-3/c): 
-		rem check for sanity
-		IF %stringask18%=="" GOTO ERROR18
-		IF %stringask18% ==1 GOTO PRINTER_SELECT
-		IF %stringask18% ==2 GOTO PRINTER_REMOVE
-		IF %stringask18% ==3 GOTO PRINTER_ADD
-		IF %stringask18% ==v GOTO PRINTER_VIEW
-		IF %stringask18% ==c GOTO CLEAR
-	:ERROR18
-			echo you must make a selection
-			pause
-	GOTO BACK18
-	:PRINTER_SELECT
-		set /p printserver= printserver: 
-	GOTO PRINTCLEAR
-	:PRINTER_REMOVE
-		SET printername=""
-		echo enter the name of the printer
-		set /p printername= printername: 
-				if %printername% == "" (
-				GOTO PRINTER_REMOVE
-				)
-		psexec.exe -nobanner \\%compname% printui.exe /dn /n \\%printserver%\%printername%
-		echo.
-		pause
-	GOTO PRINTCLEAR
-	:PRINTER_ADD
-		SET printername=""
-		echo enter the name of the printer
-		set /p printername= printername: 
-				if %printername% == "" (
-				GOTO PRINTER_ADD
-				)
-		psexec.exe -nobanner \\%compname% printui.exe /in /n \\%printserver%\%printername%
-		echo.
-		pause
-	GOTO PRINTCLEAR
-	:PRINTER_VIEW
-		psexec.exe -nobanner \\%compname% powershell.exe -command "get-WmiObject -class Win32_printer | ft name, systemName, shareName"
-		pause
-	GOTO PRINTCLEAR
-	:PRINTCLEAR
-		cls
-		GOTO PRINTERMENU
+:PROFILEMIG
+call 
+	COPY profilemig.bat \\%compname%\C$\WINDOWS\profilemig.bat
+	psexec.exe -nobanner -s \\%compname% c:\WINDOWS\profilemig.bat
+	echo profilemig finished or crashed
+	pause
+	del \\%compname%\C$\WINDOWS\profilemig.bat
 GOTO CLEAR
 :POWER
 	echo.
