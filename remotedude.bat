@@ -26,7 +26,7 @@ TITLE REMOTE DUDE - %compname%
 :::		       ______ _   _______ _____       
 :::		       |  _  \ | | |  _  \  ___|      
 :::		       | | | | | | | | | | |__        
-:::		       | | | | | | | | | |  __|    v1.5.12b
+:::		       | | | | | | | | | |  __|    v1.5.13b
 :::		       | |/ /| |_| | |/ /| |___    Remote Administrator
 :::		       |___/  \___/|___/ \____/    github.com/albanqafa
 :::		                                   
@@ -622,7 +622,6 @@ GOTO MENU
 		)
 GOTO CLEAR
 :PROFILEMIG
-call 
 	COPY profilemig.bat \\%compname%\C$\WINDOWS\profilemig.bat
 	psexec.exe -nobanner -s \\%compname% c:\WINDOWS\profilemig.bat
 	echo profilemig finished or crashed
