@@ -30,7 +30,7 @@ TITLE Profile Migrator - %compname%
 :::          X888^"""                                  88R       ""      "%       "YP'        "~'    "~        ""       ""    `"   "888E 
 :::          `88f                                      88>                                                                   .dWi   `88E 
 :::           88                                       48                                                                    4888~  J8%  
-:::           ""                                       '8                                                                     ^"===*"`   
+:::           ""                                       '8                                  v0.1                               ^"===*"`   
 :::                                                                                        Written by Alban Qafa
 for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 echo.
@@ -153,8 +153,11 @@ set /P confirm_migrate=(y/n):
 		rem dostuff
 		robocopy \\%compname%\c$\users\%_profile%\Desktop\ C:\users\%_target_profile%\Desktop /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
 		robocopy \\%compname%\c$\users\%_profile%\Documents\ C:\users\%_target_profile%\Documents /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
+		robocopy \\%compname%\c$\users\%_profile%\Downloads\ C:\users\%_target_profile%\Downloads /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
+		robocopy \\%compname%\c$\users\%_profile%\Favorites\ C:\users\%_target_profile%\Favorites /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
 		robocopy \\%compname%\c$\users\%_profile%\Pictures\ C:\users\%_target_profile%\Pictures /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
 		robocopy \\%compname%\c$\users\%_profile%\Music\ C:\users\%_target_profile%\Music /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
+		robocopy \\%compname%\c$\users\%_profile%\Videos\ C:\users\%_target_profile%\Videos /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
 		robocopy \\%compname%\c$\users\%_profile%\AppData\local\Google\ C:\users\%_target_profile%\Appdata\local\Google /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
 		robocopy \\%compname%\c$\users\%_profile%\AppData\local\Mozilla\ C:\users\%_target_profile%\Appdata\local\Mozilla /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
 		robocopy \\%compname%\c$\users\%_profile%\AppData\LocalLow\Mozilla\ C:\users\%_target_profile%\AppData\LocalLow\Mozilla /E /ZB /MT:24 /LOG+:C:\users\%_target_profile%\ProfileMig_log.log /COPY:DATSO
